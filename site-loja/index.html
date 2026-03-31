@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ArtByte | Painel</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body class="login-page">
+<div id="toast" class="toast hidden"></div>
+<div class="login-container">
+    <div class="brand-bar">
+        <div class="logo">A</div>
+        <div>
+            <strong>ARTBYTE</strong>
+            <p class="brand-subtitle">Desde 2026</p>
+        </div>
+    </div>
+
+    <div class="login-card">
+        <div class="card-header">
+            <p class="tag">Acesso</p>
+            <h1>Entrar</h1>
+            <p class="card-note">Use seu email e senha para acessar o painel.</p>
+        </div>
+        <form onsubmit="event.preventDefault(); login();">
+            <label>
+                <span>Email</span>
+                <input id="email" type="email" placeholder="seu@email.com" required>
+            </label>
+            <label>
+                <span>Senha</span>
+                <input id="senha" type="password" placeholder="********" required>""
+            </label>
+            <button type="submit">Entrar</button>
+        </form>
+    </div>
+</div>
+
+<script src="js/api.js"></script>
+<script src="js/auth.js"></script>
+</body>
+</html>
