@@ -3,54 +3,106 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Produtos | Loja</title>
+    <title>Produtos | ArtByte Store</title>
     <link rel="stylesheet" href="../css/style.css">
 </head>
-<body>
-<div class="page products-page">
-    <header class="products-header">
-        <div>
-            <p class="tag">Loja Digital</p>
-            <h1>Produtos</h1>
-            <p class="subtitle">Confira os itens disponíveis para venda.</p>
+<body class="store-page">
+<div class="store-shell">
+    <header class="store-header">
+        <div class="store-brand">
+            <div class="store-logo"></div>
+            <div>
+                <p class="tag">Marketplace</p>
+                <h1>ArtByte Store</h1>
+            </div>
         </div>
-        <a class="button-back" href="../index.html">← Voltar</a>
+
+        <div class="store-search">
+            <input id="searchInput" type="search" placeholder="Buscar produto..." oninput="filtrarProdutos()">
+        </div>
+
+        <div class="store-actions">
+            <button id="novoProdutoButton" type="button" class="button-secondary" onclick="mostrarFormularioAdd()">Novo produto</button>
+            <a class="button-back" href="../../index.html">Voltar</a>
+        </div>
     </header>
 
-    <main class="content">
-        <div id="toast" class="toast hidden"></div>
-        <div class="card product-card">
-            <div class="product-panel">
-                <div>
-                    <p class="tag">Gerenciar Produtos</p>
-                    <h2 id="formTitle">Produtos</h2>
-                    <p class="card-note" id="formNote">Clique em "Novo Produto" para abrir o formulário.</p>
+    <main class="store-layout">
+        <section class="store-main">
+            <div id="toast" class="toast hidden"></div>
+
+            <section id="adminPanel" class="card admin-panel hidden">
+                <div class="admin-panel-header">
+                    <div>
+                        <p class="tag">Painel Admin</p>
+                        <h2 id="formTitle">Adicionar produto</h2>
+                        <p class="card-note" id="formNote">Cadastre produtos com imagem, preco e estoque.</p>
+                    </div>
+                    <button type="button" class="button-secondary" onclick="ocultarFormulario()">Fechar</button>
                 </div>
-                <button type="button" class="button-secondary" onclick="mostrarFormularioAdd()">Novo Produto</button>
+
+                <form id="product-form" class="product-form hidden" onsubmit="event.preventDefault(); salvarProduto();">
+                    <input type="hidden" id="produtoId">
+                    <label>
+                        <span>Nome do produto</span>
+                        <input id="produtoNome" type="text" placeholder="Headset gamer" required>
+                    </label>
+                    <label>
+                        <span>Preco</span>
+                        <input id="produtoPreco" type="number" step="0.01" placeholder="299.90" required>
+                    </label>
+                    <label>
+                        <span>Quantidade</span>
+                        <input id="produtoQuantidade" type="number" placeholder="12" required>
+                    </label>
+                    <label>
+                        <span>URL da imagem</span>
+                        <input id="produtoImagemUrl" type="url" placeholder="https://...">
+                    </label>
+                    <div class="form-actions">
+                        <button type="submit" class="button-primary" id="submitButton">Adicionar</button>
+                        <button type="button" class="button-secondary" onclick="resetarFormulario(); ocultarFormulario();">Cancelar</button>
+                    </div>
+                </form>
+            </section>
+
+            <section class="catalog-section">
+                <div class="catalog-toolbar">
+                    <div>
+                        <p class="tag">Produtos</p>
+                        <h2>Ofertas para voce</h2>
+                    </div>
+                    <p id="catalogInfo" class="catalog-info">Carregando catalogo...</p>
+                </div>
+                <div id="catalogoVazio" class="card catalog-empty hidden">Nenhum produto encontrado.</div>
+                <div id="catalogoProdutos" class="catalog-grid"></div>
+            </section>
+        </section>
+
+        <aside class="cart-sidebar">
+            <div class="card cart-card">
+                <div class="cart-header">
+                    <div>
+                        <p class="tag">Carrinho</p>
+                        <h2>Seus itens</h2>
+                    </div>
+                    <span id="cartCount" class="cart-badge">0</span>
+                </div>
+
+                <div id="cartItems" class="cart-items">
+                    <p class="cart-empty">Seu carrinho esta vazio.</p>
+                </div>
+
+                <div class="cart-footer">
+                    <div class="cart-total-line">
+                        <span>Total</span>
+                        <strong id="cartTotal">R$ 0,00</strong>
+                    </div>
+                    <button type="button" class="button-primary" onclick="finalizarCompra()">Fechar pedido</button>
+                    <button type="button" class="button-secondary" onclick="limparCarrinho()">Limpar carrinho</button>
+                </div>
             </div>
-
-            <form id="product-form" class="product-form hidden" onsubmit="event.preventDefault(); salvarProduto();">
-                <input type="hidden" id="produtoId">
-                <label>
-                    <span>Nome do produto</span>
-                    <input id="produtoNome" type="text" placeholder="Mouse Gamer" required>
-                </label>
-                <label>
-                    <span>Preço</span>
-                    <input id="produtoPreco" type="number" step="0.01" placeholder="150.00" required>
-                </label>
-                <label>
-                    <span>Quantidade</span>
-                    <input id="produtoQuantidade" type="number" placeholder="10" required>
-                </label>
-                <div class="form-actions">
-                    <button type="submit" class="button-primary" id="submitButton">Adicionar</button>
-                    <button type="button" class="button-secondary" onclick="ocultarFormulario()">Cancelar</button>
-                </div>
-            </form>
-
-            <ul class="product-list" id="lista"></ul>
-        </div>
+        </aside>
     </main>
 </div>
 

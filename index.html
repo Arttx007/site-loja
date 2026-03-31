@@ -4,14 +4,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ArtByte | Painel</title>
-    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="site-loja/css/style.css">
 </head>
 <body class="login-page">
 <div id="toast" class="toast hidden"></div>
 <div class="login-container">
     <div class="brand-bar">
-        <div class="logo">A</div>
-        <div>
+        <div class="logo" aria-label="Logo ArtByte"></div>
+        <div class="brand-copy">
             <strong>ARTBYTE</strong>
             <p class="brand-subtitle">Desde 2026</p>
         </div>
@@ -20,10 +20,15 @@
     <div class="login-card">
         <div class="card-header">
             <p class="tag">Acesso</p>
-            <h1>Entrar</h1>
-            <p class="card-note">Use seu email e senha para acessar o painel.</p>
+            <h1 id="authTitle">Entrar</h1>
+            <p id="authDescription" class="card-note">Use seu email e senha para acessar o painel.</p>
         </div>
-        <form onsubmit="event.preventDefault(); login();">
+        <div class="auth-tabs">
+            <button id="loginTab" type="button" class="auth-tab active" onclick="mostrarLogin()">Entrar</button>
+            <button id="registerTab" type="button" class="auth-tab" onclick="mostrarCadastro()">Cadastrar</button>
+        </div>
+
+        <form id="loginForm" onsubmit="event.preventDefault(); login();">
             <label>
                 <span>Email</span>
                 <input id="email" type="email" placeholder="seu@email.com" required>
@@ -34,10 +39,22 @@
             </label>
             <button type="submit">Entrar</button>
         </form>
+
+        <form id="registerForm" class="hidden-auth-form" onsubmit="event.preventDefault(); cadastrar();">
+            <label>
+                <span>Email</span>
+                <input id="cadastroEmail" type="email" placeholder="novo@email.com" required>
+            </label>
+            <label>
+                <span>Senha</span>
+                <input id="cadastroSenha" type="password" placeholder="Crie uma senha" required>
+            </label>
+            <button type="submit">Criar conta</button>
+        </form>
     </div>
 </div>
 
-<script src="js/api.js"></script>
-<script src="js/auth.js"></script>
+<script src="site-loja/js/api.js"></script>
+<script src="site-loja/js/auth.js"></script>
 </body>
 </html>
