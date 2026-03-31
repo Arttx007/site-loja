@@ -1,5 +1,6 @@
 const API_URL = "http://localhost:8080";
 const AUTH_STORAGE_KEY = "artbyte_auth";
+const CART_STORAGE_KEY = "artbyte_cart";
 
 function getAuthData() {
     const raw = localStorage.getItem(AUTH_STORAGE_KEY);
@@ -20,12 +21,54 @@ function saveAuthData(authData) {
     localStorage.setItem(AUTH_STORAGE_KEY, JSON.stringify(authData));
 }
 
+function mergeAuthData(partialData) {
+    const current = getAuthData() || {};
+    saveAuthData({ ...current, ...partialData });
+}
+
 function clearAuthData() {
     localStorage.removeItem(AUTH_STORAGE_KEY);
 }
 
 function getToken() {
     return getAuthData()?.token || null;
+}
+
+function getCurrentUser() {
+    return getAuthData();
+}
+
+function getUserName() {
+    const authData = getAuthData();
+    if (authData?.nome && authData.nome.trim()) {
+        return authData.nome.trim();
+    }
+
+    if (authData?.email) {
+        return authData.email.split("@")[0];
+    }
+
+    return "Usuario";
+}
+
+function getUserEmail() {
+    return getAuthData()?.email || "";
+}
+
+function getUserInitials() {
+    const nome = getUserName().trim();
+
+    if (!nome) {
+        return "U";
+    }
+
+    const partes = nome.split(/\s+/).filter(Boolean);
+
+    if (partes.length === 1) {
+        return partes[0].slice(0, 2).toUpperCase();
+    }
+
+    return (partes[0][0] + partes[1][0]).toUpperCase();
 }
 
 function getUserRole() {
@@ -64,6 +107,51 @@ function requireAdmin() {
     }
 
     return true;
+}
+
+function getCart() {
+    try {
+        return JSON.parse(localStorage.getItem(CART_STORAGE_KEY)) || [];
+    } catch (error) {
+        localStorage.removeItem(CART_STORAGE_KEY);
+        return [];
+    }
+}
+
+function saveCart(cart) {
+    localStorage.setItem(CART_STORAGE_KEY, JSON.stringify(cart));
+}
+
+function clearCart() {
+    saveCart([]);
+}
+
+function getCartCount() {
+    return getCart().reduce((acc, item) => acc + (item.quantidade || 0), 0);
+}
+
+async function syncCurrentUser() {
+    if (!isAuthenticated()) {
+        return null;
+    }
+
+    try {
+        const data = await apiRequest("/auth/me", "GET");
+        const usuario = data?.dados;
+
+        if (usuario) {
+            mergeAuthData({
+                id: usuario.id ?? null,
+                nome: usuario.nome ?? null,
+                email: usuario.email ?? null,
+                role: usuario.role ?? null
+            });
+        }
+
+        return usuario || null;
+    } catch (error) {
+        return null;
+    }
 }
 
 async function apiRequest(endpoint, method = "GET", body) {

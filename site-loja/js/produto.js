@@ -1,21 +1,6 @@
-const CART_STORAGE_KEY = "artbyte_cart";
-const DEFAULT_PRODUCT_IMAGE =
-    "https://images.unsplash.com/photo-1523275335684-37898b6baf30?auto=format&fit=crop&w=800&q=80";
+const MAX_PRODUCT_PRICE = 100000;
 
 let produtosCatalogo = [];
-
-function getCart() {
-    try {
-        return JSON.parse(localStorage.getItem(CART_STORAGE_KEY)) || [];
-    } catch (error) {
-        localStorage.removeItem(CART_STORAGE_KEY);
-        return [];
-    }
-}
-
-function saveCart(cart) {
-    localStorage.setItem(CART_STORAGE_KEY, JSON.stringify(cart));
-}
 
 function aplicarPermissoesNaTela() {
     const botaoNovoProduto = document.getElementById("novoProdutoButton");
@@ -151,142 +136,8 @@ function filtrarProdutos() {
 }
 
 function adicionarAoCarrinho(produto) {
-    const cart = getCart();
-    const existente = cart.find((item) => item.id === produto.id);
-
-    if (existente) {
-        existente.quantidade += 1;
-    } else {
-        cart.push({
-            id: produto.id,
-            nome: produto.nome,
-            preco: produto.preco,
-            imagemUrl: produto.imagemUrl || DEFAULT_PRODUCT_IMAGE,
-            quantidade: 1
-        });
-    }
-
-    saveCart(cart);
-    atualizarCarrinho();
+    adicionarAoCarrinhoBase(produto);
     showToast("Produto adicionado ao carrinho.", "success");
-}
-
-function removerDoCarrinho(produtoId) {
-    const cart = getCart().filter((item) => item.id !== produtoId);
-    saveCart(cart);
-    atualizarCarrinho();
-}
-
-function alterarQuantidadeCarrinho(produtoId, delta) {
-    const cart = getCart()
-        .map((item) => {
-            if (item.id === produtoId) {
-                return { ...item, quantidade: item.quantidade + delta };
-            }
-            return item;
-        })
-        .filter((item) => item.quantidade > 0);
-
-    saveCart(cart);
-    atualizarCarrinho();
-}
-
-function limparCarrinho() {
-    saveCart([]);
-    atualizarCarrinho();
-}
-
-function atualizarCarrinho() {
-    const cart = getCart();
-    const cartItems = document.getElementById("cartItems");
-    const cartCount = document.getElementById("cartCount");
-    const cartTotal = document.getElementById("cartTotal");
-
-    cartItems.innerHTML = "";
-
-    if (!cart.length) {
-        cartItems.innerHTML = '<p class="cart-empty">Seu carrinho esta vazio.</p>';
-        cartCount.textContent = "0";
-        cartTotal.textContent = formatarMoeda(0);
-        return;
-    }
-
-    let totalItens = 0;
-    let totalValor = 0;
-
-    cart.forEach((item) => {
-        totalItens += item.quantidade;
-        totalValor += item.preco * item.quantidade;
-
-        const row = document.createElement("div");
-        row.className = "cart-item";
-
-        const imagem = document.createElement("img");
-        imagem.className = "cart-item-image";
-        imagem.src = item.imagemUrl || DEFAULT_PRODUCT_IMAGE;
-        imagem.alt = item.nome;
-
-        const info = document.createElement("div");
-        info.className = "cart-item-info";
-
-        const nome = document.createElement("strong");
-        nome.textContent = item.nome;
-
-        const preco = document.createElement("span");
-        preco.textContent = formatarMoeda(item.preco);
-
-        const controls = document.createElement("div");
-        controls.className = "cart-item-controls";
-
-        const minus = document.createElement("button");
-        minus.type = "button";
-        minus.className = "button-secondary small";
-        minus.textContent = "-";
-        minus.onclick = () => alterarQuantidadeCarrinho(item.id, -1);
-
-        const qtd = document.createElement("span");
-        qtd.textContent = item.quantidade;
-
-        const plus = document.createElement("button");
-        plus.type = "button";
-        plus.className = "button-secondary small";
-        plus.textContent = "+";
-        plus.onclick = () => alterarQuantidadeCarrinho(item.id, 1);
-
-        const remover = document.createElement("button");
-        remover.type = "button";
-        remover.className = "button-danger small";
-        remover.textContent = "Remover";
-        remover.onclick = () => removerDoCarrinho(item.id);
-
-        controls.appendChild(minus);
-        controls.appendChild(qtd);
-        controls.appendChild(plus);
-        controls.appendChild(remover);
-
-        info.appendChild(nome);
-        info.appendChild(preco);
-        info.appendChild(controls);
-
-        row.appendChild(imagem);
-        row.appendChild(info);
-        cartItems.appendChild(row);
-    });
-
-    cartCount.textContent = String(totalItens);
-    cartTotal.textContent = formatarMoeda(totalValor);
-}
-
-function finalizarCompra() {
-    const cart = getCart();
-
-    if (!cart.length) {
-        showToast("Adicione itens ao carrinho primeiro.", "error");
-        return;
-    }
-
-    showToast("Pedido fechado com sucesso.", "success");
-    limparCarrinho();
 }
 
 async function salvarProduto() {
@@ -302,6 +153,16 @@ async function salvarProduto() {
 
     if (!nome || Number.isNaN(preco) || Number.isNaN(quantidade)) {
         showToast("Preencha todos os campos corretamente.", "error");
+        return;
+    }
+
+    if (preco < 0) {
+        showToast("O preco nao pode ser negativo.", "error");
+        return;
+    }
+
+    if (preco > MAX_PRODUCT_PRICE) {
+        showToast("O preco maximo permitido e R$ 100.000,00.", "error");
         return;
     }
 
@@ -399,13 +260,6 @@ async function deletarProduto(id) {
     }
 }
 
-function formatarMoeda(valor) {
-    return new Intl.NumberFormat("pt-BR", {
-        style: "currency",
-        currency: "BRL"
-    }).format(valor || 0);
-}
-
 function showToast(message, type = "success") {
     const toast = document.getElementById("toast");
     if (!toast) return;
@@ -421,13 +275,14 @@ function showToast(message, type = "success") {
     }, 3000);
 }
 
-window.addEventListener("load", () => {
+window.addEventListener("load", async () => {
     if (!requireAuth()) {
         return;
     }
 
+    await syncCurrentUser();
+    inicializarCabecalhoLoja();
     aplicarPermissoesNaTela();
     ocultarFormulario();
-    atualizarCarrinho();
     listarProdutos();
 });

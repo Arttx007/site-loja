@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pagamento | ArtByte Store</title>
+    <link rel="stylesheet" href="../css/style.css">
+</head>
+<body class="store-page">
+<div class="store-shell">
+    <header class="store-header store-header-wide">
+        <div class="store-brand">
+            <div class="store-logo"></div>
+            <div>
+                <p class="tag">Checkout</p>
+                <h1>Pagamento</h1>
+            </div>
+        </div>
+
+        <div class="store-topbar-actions align-end">
+            <a class="button-secondary" href="./carrinho.html">Voltar ao carrinho</a>
+
+            <div class="user-menu-wrapper">
+                <button id="userMenuButton" type="button" class="user-menu-button" onclick="toggleUserMenu()">
+                    <span id="userAvatar" class="user-avatar">AB</span>
+                    <span class="user-meta">
+                        <strong id="userName">Usuario</strong>
+                        <small id="userEmail">email@email.com</small>
+                    </span>
+                </button>
+
+                <div id="userDropdown" class="user-dropdown hidden">
+                    <button type="button" onclick="abrirConfiguracoes()">Configuracoes</button>
+                    <button type="button" onclick="logout()">Sair</button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="checkout-layout">
+        <section class="card payment-card">
+            <div class="section-heading">
+                <div>
+                    <p class="tag">Pagamento</p>
+                    <h2>Finalize sua compra</h2>
+                </div>
+            </div>
+
+            <div id="toast" class="toast hidden"></div>
+
+            <form class="settings-form" onsubmit="event.preventDefault(); finalizarPagamento();">
+                <label>
+                    <span>Nome no cartao</span>
+                    <input id="paymentName" type="text" placeholder="Arthur Lima" required>
+                </label>
+                <label>
+                    <span>Numero do cartao</span>
+                    <input id="paymentCard" type="text" placeholder="0000 0000 0000 0000" required>
+                </label>
+                <div class="payment-grid">
+                    <label>
+                        <span>Validade</span>
+                        <input id="paymentExpiry" type="text" placeholder="12/29" required>
+                    </label>
+                    <label>
+                        <span>CVV</span>
+                        <input id="paymentCvv" type="text" placeholder="123" required>
+                    </label>
+                </div>
+                <button type="submit" class="button-primary">Pagar agora</button>
+            </form>
+        </section>
+
+        <aside class="card checkout-summary">
+            <div class="section-heading">
+                <div>
+                    <p class="tag">Resumo</p>
+                    <h2>Total da compra</h2>
+                </div>
+            </div>
+            <div class="summary-line">
+                <span>Itens</span>
+                <strong id="paymentItems">0</strong>
+            </div>
+            <div class="summary-line">
+                <span>Total</span>
+                <strong id="paymentTotal">R$ 0,00</strong>
+            </div>
+        </aside>
+    </main>
+</div>
+
+<script src="../js/api.js"></script>
+<script src="../js/store-common.js"></script>
+<script src="../js/pagamento.js"></script>
+</body>
+</html>

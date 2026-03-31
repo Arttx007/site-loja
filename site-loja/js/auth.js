@@ -29,17 +29,19 @@ async function login() {
 }
 
 async function cadastrar() {
+    const nome = document.getElementById("cadastroNome").value.trim();
     const email = document.getElementById("cadastroEmail").value.trim();
     const senha = document.getElementById("cadastroSenha").value;
 
-    if (!email || !senha) {
-        showToast("Preencha email e senha para cadastrar.", "error");
+    if (!nome || !email || !senha) {
+        showToast("Preencha nome, email e senha para cadastrar.", "error");
         return;
     }
 
     try {
-        const data = await apiRequest("/auth/register", "POST", { email, senha });
+        const data = await apiRequest("/auth/register", "POST", { nome, email, senha });
         showToast(data.mensagem || "Cadastro realizado com sucesso!", "success");
+        document.getElementById("cadastroNome").value = "";
         document.getElementById("email").value = email;
         document.getElementById("senha").value = "";
         document.getElementById("cadastroSenha").value = "";
@@ -87,6 +89,7 @@ function normalizarRespostaLogin(data) {
     if (dados && typeof dados === "object" && dados.token) {
         return {
             id: dados.id ?? null,
+            nome: dados.nome ?? null,
             email: dados.email ?? null,
             role: dados.role ?? extrairPayloadToken(dados.token)?.role ?? null,
             token: dados.token
@@ -97,6 +100,7 @@ function normalizarRespostaLogin(data) {
         const payload = extrairPayloadToken(dados);
         return {
             id: null,
+            nome: null,
             email: payload?.sub ?? null,
             role: payload?.role ?? null,
             token: dados
@@ -107,6 +111,7 @@ function normalizarRespostaLogin(data) {
         const payload = extrairPayloadToken(data.token);
         return {
             id: data.id ?? null,
+            nome: data.nome ?? null,
             email: data.email ?? payload?.sub ?? null,
             role: data.role ?? payload?.role ?? null,
             token: data.token

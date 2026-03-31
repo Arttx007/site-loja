@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Carrinho | ArtByte Store</title>
+    <link rel="stylesheet" href="../css/style.css">
+</head>
+<body class="store-page">
+<div class="store-shell">
+    <header class="store-header store-header-wide">
+        <div class="store-brand">
+            <div class="store-logo"></div>
+            <div>
+                <p class="tag">Carrinho</p>
+                <h1>Seu carrinho</h1>
+            </div>
+        </div>
+
+        <div class="store-topbar-actions align-end">
+            <a class="button-secondary" href="./produtos.html">Continuar comprando</a>
+            <button type="button" class="cart-trigger active" onclick="abrirCarrinho()">
+                <span class="cart-trigger-icon">Carrinho</span>
+                <span id="headerCartCount" class="cart-trigger-badge">0</span>
+            </button>
+
+            <div class="user-menu-wrapper">
+                <button id="userMenuButton" type="button" class="user-menu-button" onclick="toggleUserMenu()">
+                    <span id="userAvatar" class="user-avatar">AB</span>
+                    <span class="user-meta">
+                        <strong id="userName">Usuario</strong>
+                        <small id="userEmail">email@email.com</small>
+                    </span>
+                </button>
+
+                <div id="userDropdown" class="user-dropdown hidden">
+                    <button type="button" onclick="abrirConfiguracoes()">Configuracoes</button>
+                    <button type="button" onclick="logout()">Sair</button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="checkout-layout">
+        <section class="card cart-page-list">
+            <div class="section-heading">
+                <div>
+                    <p class="tag">Itens</p>
+                    <h2>Revise seu pedido</h2>
+                </div>
+                <button type="button" class="button-secondary" onclick="esvaziarCarrinho()">Limpar carrinho</button>
+            </div>
+            <div id="cartPageItems" class="cart-page-items"></div>
+            <p id="cartPageEmpty" class="cart-empty hidden">Seu carrinho esta vazio.</p>
+        </section>
+
+        <aside class="card checkout-summary">
+            <div class="section-heading">
+                <div>
+                    <p class="tag">Resumo</p>
+                    <h2>Pedido</h2>
+                </div>
+            </div>
+            <div class="summary-line">
+                <span>Itens</span>
+                <strong id="summaryItems">0</strong>
+            </div>
+            <div class="summary-line">
+                <span>Total</span>
+                <strong id="summaryTotal">R$ 0,00</strong>
+            </div>
+            <button type="button" class="button-primary" onclick="irParaPagamento()">Ir para pagamento</button>
+        </aside>
+    </main>
+</div>
+
+<script src="../js/api.js"></script>
+<script src="../js/store-common.js"></script>
+<script src="../js/carrinho.js"></script>
+</body>
+</html>

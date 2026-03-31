@@ -8,7 +8,7 @@
 </head>
 <body class="store-page">
 <div class="store-shell">
-    <header class="store-header">
+    <header class="store-header store-header-wide">
         <div class="store-brand">
             <div class="store-logo"></div>
             <div>
@@ -21,13 +21,30 @@
             <input id="searchInput" type="search" placeholder="Buscar produto..." oninput="filtrarProdutos()">
         </div>
 
-        <div class="store-actions">
-            <button id="novoProdutoButton" type="button" class="button-secondary" onclick="mostrarFormularioAdd()">Novo produto</button>
-            <a class="button-back" href="../../index.html">Voltar</a>
+        <div class="store-topbar-actions">
+            <button type="button" class="cart-trigger" onclick="abrirCarrinho()">
+                <span class="cart-trigger-icon">Carrinho</span>
+                <span id="headerCartCount" class="cart-trigger-badge">0</span>
+            </button>
+
+            <div class="user-menu-wrapper">
+                <button id="userMenuButton" type="button" class="user-menu-button" onclick="toggleUserMenu()">
+                    <span id="userAvatar" class="user-avatar">AB</span>
+                    <span class="user-meta">
+                        <strong id="userName">Usuario</strong>
+                        <small id="userEmail">email@email.com</small>
+                    </span>
+                </button>
+
+                <div id="userDropdown" class="user-dropdown hidden">
+                    <button type="button" onclick="abrirConfiguracoes()">Configuracoes</button>
+                    <button type="button" onclick="logout()">Sair</button>
+                </div>
+            </div>
         </div>
     </header>
 
-    <main class="store-layout">
+    <main class="store-layout-single">
         <section class="store-main">
             <div id="toast" class="toast hidden"></div>
 
@@ -41,6 +58,10 @@
                     <button type="button" class="button-secondary" onclick="ocultarFormulario()">Fechar</button>
                 </div>
 
+                <div class="admin-toolbar">
+                    <button id="novoProdutoButton" type="button" class="button-secondary" onclick="mostrarFormularioAdd()">Novo produto</button>
+                </div>
+
                 <form id="product-form" class="product-form hidden" onsubmit="event.preventDefault(); salvarProduto();">
                     <input type="hidden" id="produtoId">
                     <label>
@@ -49,11 +70,11 @@
                     </label>
                     <label>
                         <span>Preco</span>
-                        <input id="produtoPreco" type="number" step="0.01" placeholder="299.90" required>
+                        <input id="produtoPreco" type="number" step="0.01" min="0" max="100000" placeholder="299.90" required>
                     </label>
                     <label>
                         <span>Quantidade</span>
-                        <input id="produtoQuantidade" type="number" placeholder="12" required>
+                        <input id="produtoQuantidade" type="number" min="0" placeholder="12" required>
                     </label>
                     <label>
                         <span>URL da imagem</span>
@@ -78,35 +99,11 @@
                 <div id="catalogoProdutos" class="catalog-grid"></div>
             </section>
         </section>
-
-        <aside class="cart-sidebar">
-            <div class="card cart-card">
-                <div class="cart-header">
-                    <div>
-                        <p class="tag">Carrinho</p>
-                        <h2>Seus itens</h2>
-                    </div>
-                    <span id="cartCount" class="cart-badge">0</span>
-                </div>
-
-                <div id="cartItems" class="cart-items">
-                    <p class="cart-empty">Seu carrinho esta vazio.</p>
-                </div>
-
-                <div class="cart-footer">
-                    <div class="cart-total-line">
-                        <span>Total</span>
-                        <strong id="cartTotal">R$ 0,00</strong>
-                    </div>
-                    <button type="button" class="button-primary" onclick="finalizarCompra()">Fechar pedido</button>
-                    <button type="button" class="button-secondary" onclick="limparCarrinho()">Limpar carrinho</button>
-                </div>
-            </div>
-        </aside>
     </main>
 </div>
 
 <script src="../js/api.js"></script>
+<script src="../js/store-common.js"></script>
 <script src="../js/produto.js"></script>
 </body>
 </html>
