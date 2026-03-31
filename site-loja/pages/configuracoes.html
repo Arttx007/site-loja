@@ -49,6 +49,29 @@
             <div id="toast" class="toast hidden"></div>
 
             <form class="settings-form" onsubmit="event.preventDefault(); salvarConfiguracoes();">
+                <div class="profile-photo-block">
+                    <div id="configPhotoPreview" class="profile-photo-preview">AB</div>
+                    <div class="profile-photo-fields">
+                        <label>
+                            <span>Enviar foto</span>
+                            <input id="configFotoFile" type="file" accept="image/*" onchange="carregarFotoSelecionada(event)">
+                        </label>
+                        <div class="photo-adjust-grid">
+                            <label>
+                                <span>Zoom</span>
+                                <input id="configFotoZoom" type="range" min="1" max="2.5" step="0.01" oninput="atualizarPreviewFoto()">
+                            </label>
+                            <label>
+                                <span>Posicao horizontal</span>
+                                <input id="configFotoPosX" type="range" min="0" max="100" step="1" oninput="atualizarPreviewFoto()">
+                            </label>
+                            <label>
+                                <span>Posicao vertical</span>
+                                <input id="configFotoPosY" type="range" min="0" max="100" step="1" oninput="atualizarPreviewFoto()">
+                            </label>
+                        </div>
+                    </div>
+                </div>
                 <label>
                     <span>Nome</span>
                     <input id="configNome" type="text" placeholder="Seu nome" required>

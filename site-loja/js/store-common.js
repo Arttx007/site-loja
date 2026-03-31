@@ -59,9 +59,19 @@ function renderizarAreaUsuario() {
     const avatar = document.getElementById("userAvatar");
     const nome = document.getElementById("userName");
     const email = document.getElementById("userEmail");
+    const foto = getUserPhoto();
+    const fotoZoom = getUserPhotoZoom();
+    const fotoPosX = getUserPhotoPosX();
+    const fotoPosY = getUserPhotoPosY();
 
     if (avatar) {
-        avatar.textContent = getUserInitials();
+        if (foto) {
+            avatar.innerHTML = `<img src="${foto}" alt="${getUserName()}" style="transform: scale(${fotoZoom}); object-position: ${fotoPosX}% ${fotoPosY}%;">`;
+            avatar.classList.add("has-photo");
+        } else {
+            avatar.textContent = getUserInitials();
+            avatar.classList.remove("has-photo");
+        }
     }
 
     if (nome) {

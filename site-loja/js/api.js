@@ -55,6 +55,22 @@ function getUserEmail() {
     return getAuthData()?.email || "";
 }
 
+function getUserPhoto() {
+    return getAuthData()?.fotoUrl || "";
+}
+
+function getUserPhotoZoom() {
+    return getAuthData()?.fotoZoom ?? 1;
+}
+
+function getUserPhotoPosX() {
+    return getAuthData()?.fotoPosX ?? 50;
+}
+
+function getUserPhotoPosY() {
+    return getAuthData()?.fotoPosY ?? 50;
+}
+
 function getUserInitials() {
     const nome = getUserName().trim();
 
@@ -85,6 +101,12 @@ function isAuthenticated() {
 
 function redirectToLogin() {
     window.location.href = "../../index.html";
+}
+
+function logout() {
+    clearAuthData();
+    clearCart();
+    redirectToLogin();
 }
 
 function requireAuth() {
@@ -144,6 +166,10 @@ async function syncCurrentUser() {
                 id: usuario.id ?? null,
                 nome: usuario.nome ?? null,
                 email: usuario.email ?? null,
+                fotoUrl: usuario.fotoUrl ?? null,
+                fotoZoom: usuario.fotoZoom ?? 1,
+                fotoPosX: usuario.fotoPosX ?? 50,
+                fotoPosY: usuario.fotoPosY ?? 50,
                 role: usuario.role ?? null
             });
         }

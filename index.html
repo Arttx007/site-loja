@@ -21,7 +21,7 @@
         <div class="card-header">
             <p class="tag">Acesso</p>
             <h1 id="authTitle">Entrar</h1>
-            <p id="authDescription" class="card-note">Use seu email e senha para acessar o painel.</p>
+            <p id="authDescription" class="card-note">Use seu usuario ou email e sua senha para acessar o painel.</p>
         </div>
         <div class="auth-tabs">
             <button id="loginTab" type="button" class="auth-tab active" onclick="mostrarLogin()">Entrar</button>
@@ -30,8 +30,8 @@
 
         <form id="loginForm" onsubmit="event.preventDefault(); login();">
             <label>
-                <span>Email</span>
-                <input id="email" type="email" placeholder="seu@email.com" required>
+                <span>Usuario ou email</span>
+                <input id="email" type="text" placeholder="Usuario ou seu@email.com" required>
             </label>
             <label>
                 <span>Senha</span>
@@ -42,8 +42,8 @@
 
         <form id="registerForm" class="hidden-auth-form" onsubmit="event.preventDefault(); cadastrar();">
             <label>
-                <span>Nome de usuario</span>
-                <input id="cadastroNome" type="text" placeholder="Arthur Lima" required>
+                <span>Nome</span>
+                <input id="cadastroNome" type="text" placeholder="Seu nome" required>
             </label>
             <label>
                 <span>Email</span>

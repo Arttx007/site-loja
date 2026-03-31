@@ -3,7 +3,7 @@ async function login() {
     const senha = document.getElementById("senha").value;
 
     if (!email || !senha) {
-        showToast("Preencha email e senha.", "error");
+        showToast("Preencha usuario ou email e senha.", "error");
         return;
     }
 
@@ -64,7 +64,7 @@ function mostrarLogin() {
     loginTab.classList.add("active");
     registerTab.classList.remove("active");
     authTitle.textContent = "Entrar";
-    authDescription.textContent = "Use seu email e senha para acessar o painel.";
+    authDescription.textContent = "Use seu usuario ou email e sua senha para acessar o painel.";
 }
 
 function mostrarCadastro() {
@@ -91,6 +91,10 @@ function normalizarRespostaLogin(data) {
             id: dados.id ?? null,
             nome: dados.nome ?? null,
             email: dados.email ?? null,
+            fotoUrl: dados.fotoUrl ?? null,
+            fotoZoom: dados.fotoZoom ?? 1,
+            fotoPosX: dados.fotoPosX ?? 50,
+            fotoPosY: dados.fotoPosY ?? 50,
             role: dados.role ?? extrairPayloadToken(dados.token)?.role ?? null,
             token: dados.token
         };
@@ -102,6 +106,10 @@ function normalizarRespostaLogin(data) {
             id: null,
             nome: null,
             email: payload?.sub ?? null,
+            fotoUrl: null,
+            fotoZoom: 1,
+            fotoPosX: 50,
+            fotoPosY: 50,
             role: payload?.role ?? null,
             token: dados
         };
@@ -113,6 +121,10 @@ function normalizarRespostaLogin(data) {
             id: data.id ?? null,
             nome: data.nome ?? null,
             email: data.email ?? payload?.sub ?? null,
+            fotoUrl: data.fotoUrl ?? null,
+            fotoZoom: data.fotoZoom ?? 1,
+            fotoPosX: data.fotoPosX ?? 50,
+            fotoPosY: data.fotoPosY ?? 50,
             role: data.role ?? payload?.role ?? null,
             token: data.token
         };

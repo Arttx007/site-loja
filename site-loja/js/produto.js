@@ -4,15 +4,43 @@ let produtosCatalogo = [];
 
 function aplicarPermissoesNaTela() {
     const botaoNovoProduto = document.getElementById("novoProdutoButton");
+    const botaoNovoProdutoHero = document.getElementById("novoProdutoButtonHero");
     const adminPanel = document.getElementById("adminPanel");
+    const adminDashboard = document.getElementById("adminDashboard");
+    const adminInventory = document.getElementById("adminInventory");
+    const filterSidebar = document.getElementById("filterSidebar");
+    const catalogSection = document.getElementById("catalogSection");
+    const body = document.body;
 
     if (botaoNovoProduto) {
         botaoNovoProduto.style.display = isAdmin() ? "inline-flex" : "none";
     }
 
+    if (botaoNovoProdutoHero) {
+        botaoNovoProdutoHero.style.display = isAdmin() ? "inline-flex" : "none";
+    }
+
     if (adminPanel) {
         adminPanel.classList.toggle("hidden", !isAdmin());
     }
+
+    if (adminDashboard) {
+        adminDashboard.classList.toggle("hidden", !isAdmin());
+    }
+
+    if (adminInventory) {
+        adminInventory.classList.toggle("hidden", !isAdmin());
+    }
+
+    if (filterSidebar) {
+        filterSidebar.classList.toggle("hidden", isAdmin());
+    }
+
+    if (catalogSection) {
+        catalogSection.classList.toggle("hidden", isAdmin());
+    }
+
+    body.classList.toggle("admin-view", isAdmin());
 }
 
 async function listarProdutos() {
@@ -30,8 +58,7 @@ async function listarProdutos() {
     try {
         const data = await apiRequest("/dw/produtos/catalogo", "GET");
         produtosCatalogo = data?.dados || [];
-        renderizarCatalogo(produtosCatalogo);
-        catalogInfo.textContent = `${produtosCatalogo.length} itens encontrados`;
+        aplicarFiltros();
     } catch (error) {
         if (error.status === 401) {
             showToast("Sua sessao expirou. Faca login novamente.", "error");
@@ -43,6 +70,54 @@ async function listarProdutos() {
         catalogoVazio.classList.remove("hidden");
         catalogoVazio.textContent = error.mensagem || "Erro ao carregar produtos.";
     }
+}
+
+function obterProdutosFiltrados() {
+    const termo = document.getElementById("searchInput").value.trim().toLowerCase();
+    const minPrice = parseFloat(document.getElementById("filterMinPrice")?.value);
+    const maxPrice = parseFloat(document.getElementById("filterMaxPrice")?.value);
+    const availableOnly = document.getElementById("filterAvailable")?.checked;
+    const sort = document.getElementById("sortSelect")?.value || "relevancia";
+
+    let filtrados = produtosCatalogo.filter((produto) => {
+        const nomeValido = produto.nome.toLowerCase().includes(termo);
+        const preco = produto.preco || 0;
+        const minValido = Number.isNaN(minPrice) ? true : preco >= minPrice;
+        const maxValido = Number.isNaN(maxPrice) ? true : preco <= maxPrice;
+        const disponibilidadeValida = availableOnly ? Boolean(produto.disponivel) : true;
+
+        return nomeValido && minValido && maxValido && disponibilidadeValida;
+    });
+
+    if (sort === "menor-preco") {
+        filtrados = [...filtrados].sort((a, b) => (a.preco || 0) - (b.preco || 0));
+    } else if (sort === "maior-preco") {
+        filtrados = [...filtrados].sort((a, b) => (b.preco || 0) - (a.preco || 0));
+    } else if (sort === "nome") {
+        filtrados = [...filtrados].sort((a, b) => a.nome.localeCompare(b.nome));
+    }
+
+    return filtrados;
+}
+
+function atualizarResumoFiltros(total) {
+    const catalogInfo = document.getElementById("catalogInfo");
+    const filterSummaryCount = document.getElementById("filterSummaryCount");
+
+    if (catalogInfo) {
+        catalogInfo.textContent = `${total} itens encontrados`;
+    }
+
+    if (filterSummaryCount) {
+        filterSummaryCount.textContent = `${total} itens`;
+    }
+}
+
+function aplicarFiltros() {
+    const filtrados = obterProdutosFiltrados();
+    renderizarCatalogo(filtrados);
+    atualizarResumoFiltros(filtrados.length);
+    renderizarDashboardAdmin(produtosCatalogo);
 }
 
 function renderizarCatalogo(produtos) {
@@ -126,13 +201,76 @@ function renderizarCatalogo(produtos) {
     });
 }
 
+function renderizarDashboardAdmin(produtos) {
+    if (!isAdmin()) {
+        return;
+    }
+
+    const totalProdutos = produtos.length;
+    const disponiveis = produtos.filter((produto) => produto.disponivel).length;
+    const estoqueTotal = produtos.reduce((acc, produto) => acc + (produto.quantidade || 0), 0);
+    const maiorPreco = produtos.reduce((acc, produto) => Math.max(acc, produto.preco || 0), 0);
+
+    document.getElementById("kpiTotalProdutos").textContent = String(totalProdutos);
+    document.getElementById("kpiDisponiveis").textContent = String(disponiveis);
+    document.getElementById("kpiEstoque").textContent = String(estoqueTotal);
+    document.getElementById("kpiMaiorPreco").textContent = formatarMoeda(maiorPreco);
+
+    const inventoryInfo = document.getElementById("inventoryInfo");
+    const tableBody = document.getElementById("adminInventoryBody");
+
+    if (inventoryInfo) {
+        inventoryInfo.textContent = `${totalProdutos} produtos monitorados`;
+    }
+
+    if (!tableBody) {
+        return;
+    }
+
+    tableBody.innerHTML = "";
+
+    produtos.forEach((produto) => {
+        const tr = document.createElement("tr");
+        tr.innerHTML = `
+            <td>
+                <div class="admin-product-cell">
+                    <img src="${produto.imagemUrl || DEFAULT_PRODUCT_IMAGE}" alt="${produto.nome}">
+                    <div>
+                        <strong>${produto.nome}</strong>
+                        <span>ID #${produto.id}</span>
+                    </div>
+                </div>
+            </td>
+            <td>${formatarMoeda(produto.preco || 0)}</td>
+            <td>${produto.quantidade ?? 0}</td>
+            <td><span class="status-pill ${produto.disponivel ? "in-stock" : "out-stock"}">${produto.disponivel ? "Disponivel" : "Indisponivel"}</span></td>
+            <td>
+                <div class="admin-table-actions">
+                    <button type="button" class="button-secondary small">Editar</button>
+                    <button type="button" class="button-danger small">Excluir</button>
+                </div>
+            </td>
+        `;
+
+        const [editButton, deleteButton] = tr.querySelectorAll("button");
+        editButton.onclick = () => editarProduto(produto);
+        deleteButton.onclick = () => deletarProduto(produto.id);
+
+        tableBody.appendChild(tr);
+    });
+}
+
 function filtrarProdutos() {
-    const termo = document.getElementById("searchInput").value.trim().toLowerCase();
-    const filtrados = produtosCatalogo.filter((produto) =>
-        produto.nome.toLowerCase().includes(termo)
-    );
-    renderizarCatalogo(filtrados);
-    document.getElementById("catalogInfo").textContent = `${filtrados.length} itens encontrados`;
+    aplicarFiltros();
+}
+
+function limparFiltros() {
+    document.getElementById("searchInput").value = "";
+    document.getElementById("sortSelect").value = "relevancia";
+    document.getElementById("filterMinPrice").value = "";
+    document.getElementById("filterMaxPrice").value = "";
+    document.getElementById("filterAvailable").checked = false;
+    aplicarFiltros();
 }
 
 function adicionarAoCarrinho(produto) {

@@ -33,30 +33,30 @@ a {
     min-height: 100vh;
     display: grid;
     place-items: center;
-    padding: 6px 10px;
+    padding: 2px 10px 8px;
     overflow: hidden;
 }
 .login-container {
-    width: min(380px, 100%);
+    width: min(372px, 100%);
     backdrop-filter: blur(14px);
     background: rgba(10, 16, 42, 0.78);
     border: 1px solid rgba(255, 255, 255, 0.08);
     border-radius: 26px;
     box-shadow: 0 24px 60px rgba(0, 0, 0, 0.28);
-    padding: 16px 18px;
+    padding: 14px 16px 12px;
 }
 .brand-bar {
     display: flex;
     flex-direction: column;
     align-items: center;
     text-align: center;
-    gap: 6px;
-    margin-bottom: 10px;
+    gap: 4px;
+    margin-bottom: 6px;
 }
 .brand-bar .logo {
-    width: 78px;
-    height: 78px;
-    border-radius: 18px;
+    width: 58px;
+    height: 58px;
+    border-radius: 16px;
     flex-shrink: 0;
     background: url("../assets/Logo-transparent.png") center/contain no-repeat;
     filter: drop-shadow(0 10px 24px rgba(44, 114, 255, 0.22));
@@ -66,14 +66,15 @@ a {
 }
 .brand-bar strong {
     display: block;
-    font-size: 1.15rem;
+    font-size: 1.04rem;
     letter-spacing: 0.08em;
+    line-height: 1.1;
 }
 .brand-subtitle {
     margin: 2px 0 0;
     color: #c1acff;
     text-transform: uppercase;
-    font-size: 0.76rem;
+    font-size: 0.7rem;
     letter-spacing: 0.14em;
 }
 .login-card {
@@ -81,21 +82,21 @@ a {
     background: rgba(255, 255, 255, 0.05);
     border: 1px solid rgba(255, 255, 255, 0.08);
     border-radius: 22px;
-    padding: 18px;
+    padding: 14px 16px 12px;
 }
 .login-card .card-header {
-    margin-bottom: 16px;
+    margin-bottom: 10px;
 }
 .auth-tabs {
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 8px;
-    margin-bottom: 14px;
+    margin-bottom: 10px;
 }
 .auth-tab {
     min-width: 0;
     width: 100%;
-    padding: 10px 12px;
+    padding: 9px 12px;
     border-radius: 12px;
     border: 1px solid rgba(255, 255, 255, 0.1);
     background: rgba(255, 255, 255, 0.04);
@@ -116,33 +117,34 @@ a {
     display: none;
 }
 .login-card .tag {
-    margin: 0 0 6px;
+    margin: 0 0 4px;
     color: #88a4ff;
     font-size: 0.72rem;
     letter-spacing: 0.12em;
     text-transform: uppercase;
 }
 .login-card h1 {
-    margin: 0;
-    font-size: 1.65rem;
+    margin: 0 0 2px;
+    font-size: 1.45rem;
+    line-height: 1.1;
 }
 .card-note {
-    margin: 8px 0 0;
+    margin: 6px 0 0;
     color: #b9c5ff;
-    line-height: 1.5;
-    font-size: 0.92rem;
+    line-height: 1.4;
+    font-size: 0.88rem;
 }
 .login-card label {
     display: grid;
-    gap: 8px;
-    margin-bottom: 12px;
+    gap: 6px;
+    margin-bottom: 10px;
     color: #d7e0ff;
-    font-size: 0.85rem;
+    font-size: 0.82rem;
 }
 .login-card input {
     width: 100%;
     min-width: 0;
-    padding: 13px 15px;
+    padding: 11px 14px;
     background: rgba(255, 255, 255, 0.06);
     border: 1px solid rgba(255, 255, 255, 0.12);
     border-radius: 14px;
@@ -154,7 +156,7 @@ a {
 .login-card form button {
     width: 100%;
     min-width: 0;
-    padding: 13px 15px;
+    padding: 11px 15px;
     border-radius: 14px;
     border: none;
     background: linear-gradient(135deg, #2b72ff, #1dd2af);
@@ -170,13 +172,14 @@ a {
 
 @media (max-width: 520px) {
     .login-container {
+        width: min(360px, 100%);
         padding: 12px 14px;
     }
     .brand-bar {
-        margin-bottom: 8px;
+        margin-bottom: 10px;
     }
     .login-card {
-        padding: 14px;
+        padding: 13px;
     }
 }
 .brand {
@@ -593,6 +596,14 @@ nav {
             #070b1a;
 }
 
+.admin-view.store-page {
+    background:
+            linear-gradient(rgba(5, 12, 28, 0.94), rgba(7, 19, 32, 0.97)),
+            radial-gradient(circle at top left, rgba(36, 178, 255, 0.18), transparent 26%),
+            radial-gradient(circle at bottom right, rgba(29, 210, 175, 0.14), transparent 24%),
+            #06111f;
+}
+
 .store-shell {
     padding: 24px;
 }
@@ -612,15 +623,20 @@ nav {
 }
 
 .store-logo {
-    width: 58px;
-    height: 58px;
+    width: 76px;
+    height: 76px;
     background: url("../assets/Logo-transparent.png") center/contain no-repeat;
     filter: drop-shadow(0 10px 24px rgba(44, 114, 255, 0.22));
+    flex-shrink: 0;
 }
 
 .store-brand h1 {
     margin: 0;
-    font-size: 1.7rem;
+    font-size: 1.85rem;
+}
+
+.admin-view .store-brand h1 {
+    letter-spacing: 0.02em;
 }
 
 .store-search input {
@@ -847,6 +863,13 @@ nav {
     display: block;
 }
 
+.store-catalog-layout {
+    display: grid;
+    grid-template-columns: 280px minmax(0, 1fr);
+    gap: 24px;
+    align-items: start;
+}
+
 .store-topbar-actions {
     display: flex;
     align-items: center;
@@ -920,6 +943,18 @@ nav {
     background: linear-gradient(135deg, #2b72ff, #1dd2af);
     color: #fff;
     font-weight: 700;
+    overflow: hidden;
+}
+
+.user-avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+.user-avatar.has-photo {
+    background: rgba(255, 255, 255, 0.08);
 }
 
 .user-meta {
@@ -977,6 +1012,256 @@ nav {
     margin-bottom: 16px;
 }
 
+.filter-sidebar {
+    position: sticky;
+    top: 24px;
+    display: grid;
+    gap: 18px;
+    padding: 22px;
+    background:
+        linear-gradient(180deg, rgba(10, 16, 42, 0.98), rgba(19, 30, 75, 0.96));
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    box-shadow: 0 20px 44px rgba(0, 0, 0, 0.2);
+}
+
+.filter-header {
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+    align-items: start;
+}
+
+.filter-header h2 {
+    margin: 4px 0 0;
+    font-size: 1.35rem;
+}
+
+.filter-group {
+    display: grid;
+    gap: 8px;
+}
+
+.filter-group label {
+    color: #ccd7ff;
+    font-size: 0.94rem;
+}
+
+.filter-group input,
+.filter-group select {
+    width: 100%;
+    min-height: 48px;
+    padding: 12px 14px;
+    border-radius: 14px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    background: rgba(255, 255, 255, 0.05);
+    color: #eef2ff;
+    outline: none;
+}
+
+.filter-group select {
+    appearance: none;
+}
+
+.filter-group select option {
+    background: #18224f;
+    color: #eef2ff;
+}
+
+.filter-group input:focus,
+.filter-group select:focus {
+    border-color: rgba(71, 146, 255, 0.65);
+    box-shadow: 0 0 0 4px rgba(43, 114, 255, 0.12);
+}
+
+.filter-checklist {
+    display: grid;
+    gap: 10px;
+    padding: 14px 16px;
+    border-radius: 18px;
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.filter-checkbox {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: #eef2ff;
+}
+
+.filter-checkbox input {
+    appearance: none;
+    width: 20px;
+    height: 20px;
+    margin: 0;
+    border-radius: 6px;
+    border: 1px solid rgba(155, 182, 255, 0.45);
+    background: rgba(255, 255, 255, 0.06);
+    display: grid;
+    place-items: center;
+    cursor: pointer;
+    transition: border-color 0.2s ease, background 0.2s ease, box-shadow 0.2s ease;
+}
+
+.filter-checkbox input::after {
+    content: "";
+    width: 10px;
+    height: 10px;
+    border-radius: 3px;
+    background: linear-gradient(135deg, #2b72ff, #1dd2af);
+    transform: scale(0);
+    transition: transform 0.18s ease;
+}
+
+.filter-checkbox input:checked {
+    border-color: rgba(43, 114, 255, 0.9);
+    box-shadow: 0 0 0 4px rgba(43, 114, 255, 0.12);
+}
+
+.filter-checkbox input:checked::after {
+    transform: scale(1);
+}
+
+.filter-summary {
+    padding: 16px 18px;
+    border-radius: 18px;
+    background: linear-gradient(135deg, rgba(43, 114, 255, 0.16), rgba(29, 210, 175, 0.1));
+    border: 1px solid rgba(105, 161, 255, 0.18);
+}
+
+.filter-summary strong {
+    display: block;
+    margin-bottom: 6px;
+}
+
+.filter-summary p {
+    margin: 0;
+    color: #c7d5ff;
+    line-height: 1.5;
+    font-size: 0.94rem;
+}
+
+.admin-dashboard {
+    display: grid;
+    gap: 18px;
+}
+
+.admin-hero {
+    display: flex;
+    justify-content: space-between;
+    gap: 18px;
+    align-items: center;
+    background:
+        linear-gradient(135deg, rgba(18, 31, 88, 0.96), rgba(18, 107, 95, 0.82));
+    border: 1px solid rgba(89, 150, 255, 0.22);
+}
+
+.admin-hero h2 {
+    margin: 4px 0 0;
+    font-size: 2rem;
+}
+
+.admin-kpis {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 16px;
+}
+
+.admin-kpi {
+    gap: 8px;
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.06), rgba(255, 255, 255, 0.03));
+}
+
+.admin-kpi span {
+    color: #aeb8ff;
+    font-size: 0.92rem;
+}
+
+.admin-kpi strong {
+    font-size: 1.6rem;
+    color: #ffffff;
+}
+
+.admin-inventory {
+    display: grid;
+    gap: 16px;
+}
+
+.admin-table-wrap {
+    overflow-x: auto;
+}
+
+.admin-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.admin-table th,
+.admin-table td {
+    padding: 14px 12px;
+    text-align: left;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.admin-table th {
+    color: #9fb2ff;
+    font-size: 0.82rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+}
+
+.admin-product-cell {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.admin-product-cell img {
+    width: 54px;
+    height: 54px;
+    border-radius: 14px;
+    object-fit: cover;
+}
+
+.admin-product-cell strong {
+    display: block;
+    margin-bottom: 4px;
+}
+
+.admin-product-cell span {
+    color: #aeb8ff;
+    font-size: 0.85rem;
+}
+
+.status-pill {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 108px;
+    padding: 8px 12px;
+    border-radius: 999px;
+    font-size: 0.84rem;
+    font-weight: 600;
+}
+
+.status-pill.in-stock {
+    background: rgba(29, 210, 175, 0.14);
+    color: #bff8eb;
+    border: 1px solid rgba(29, 210, 175, 0.3);
+}
+
+.status-pill.out-stock {
+    background: rgba(255, 111, 145, 0.14);
+    color: #ffd2de;
+    border: 1px solid rgba(255, 111, 145, 0.28);
+}
+
+.admin-table-actions {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
 .checkout-layout {
     display: grid;
     grid-template-columns: minmax(0, 1fr) 320px;
@@ -1007,6 +1292,95 @@ nav {
 .payment-card {
     display: grid;
     gap: 16px;
+}
+
+.settings-card {
+    gap: 22px;
+}
+
+.payment-card {
+    padding: 28px;
+    background:
+        linear-gradient(180deg, rgba(20, 31, 78, 0.96), rgba(10, 16, 42, 0.98));
+    border: 1px solid rgba(86, 145, 255, 0.24);
+    box-shadow: 0 24px 56px rgba(3, 8, 24, 0.36);
+}
+
+.payment-card .section-heading {
+    margin-bottom: 10px;
+}
+
+.payment-card .section-heading h2 {
+    font-size: 1.9rem;
+}
+
+.payment-card .tag {
+    color: #7db0ff;
+}
+
+.payment-topline {
+    display: flex;
+    justify-content: space-between;
+    gap: 16px;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.payment-security-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 14px;
+    border-radius: 999px;
+    background: rgba(29, 210, 175, 0.12);
+    border: 1px solid rgba(29, 210, 175, 0.28);
+    color: #bff8eb;
+    font-size: 0.92rem;
+    font-weight: 600;
+}
+
+.payment-security-badge::before {
+    content: "";
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: #1dd2af;
+    box-shadow: 0 0 18px rgba(29, 210, 175, 0.55);
+}
+
+.payment-brands {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.payment-brands span {
+    padding: 9px 12px;
+    border-radius: 12px;
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    color: #eef2ff;
+    font-size: 0.9rem;
+    letter-spacing: 0.02em;
+}
+
+.payment-highlight {
+    padding: 18px 20px;
+    border-radius: 20px;
+    background: linear-gradient(135deg, rgba(43, 114, 255, 0.16), rgba(29, 210, 175, 0.1));
+    border: 1px solid rgba(105, 161, 255, 0.24);
+}
+
+.payment-highlight strong {
+    display: block;
+    margin-bottom: 6px;
+    font-size: 1rem;
+}
+
+.payment-highlight p {
+    margin: 0;
+    color: #c7d5ff;
+    line-height: 1.5;
 }
 
 .cart-page-items {
@@ -1059,14 +1433,179 @@ nav {
     gap: 16px;
 }
 
+.settings-form label {
+    display: grid;
+    gap: 8px;
+}
+
+.profile-photo-block {
+    display: grid;
+    grid-template-columns: 96px minmax(0, 1fr);
+    gap: 16px;
+    align-items: center;
+    padding: 16px;
+    border-radius: 20px;
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.profile-photo-preview {
+    width: 96px;
+    height: 96px;
+    border-radius: 24px;
+    display: grid;
+    place-items: center;
+    background: linear-gradient(135deg, #2b72ff, #1dd2af);
+    color: #fff;
+    font-size: 1.8rem;
+    font-weight: 700;
+    overflow: hidden;
+}
+
+.profile-photo-preview img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transform-origin: center;
+}
+
+.profile-photo-preview.has-photo {
+    background: rgba(255, 255, 255, 0.08);
+}
+
+.profile-photo-fields {
+    display: grid;
+    gap: 14px;
+}
+
+.photo-adjust-grid {
+    display: grid;
+    gap: 12px;
+}
+
+.settings-form input[type="file"] {
+    padding: 10px 12px;
+}
+
+.settings-form input[type="range"] {
+    padding: 0;
+    min-height: auto;
+    height: 6px;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.1);
+    box-shadow: none;
+}
+
+.settings-form input[type="range"]:focus {
+    transform: none;
+    box-shadow: none;
+}
+
+.settings-form label span {
+    color: #ccd7ff;
+    font-size: 0.95rem;
+}
+
+.settings-form input {
+    width: 100%;
+    min-height: 54px;
+    padding: 14px 16px;
+    border-radius: 16px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    background: rgba(255, 255, 255, 0.06);
+    color: #eef2ff;
+    outline: none;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
+}
+
+.settings-form input::placeholder {
+    color: rgba(210, 220, 255, 0.55);
+}
+
+.settings-form input:focus {
+    border-color: rgba(71, 146, 255, 0.65);
+    box-shadow: 0 0 0 4px rgba(43, 114, 255, 0.12);
+    transform: translateY(-1px);
+}
+
 .payment-grid {
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 16px;
 }
 
+.payment-note {
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+    padding: 14px 16px;
+    border-radius: 16px;
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.payment-note p {
+    margin: 0;
+    color: #bfcaff;
+    line-height: 1.5;
+    font-size: 0.94rem;
+}
+
+.payment-note-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: #2b72ff;
+    margin-top: 4px;
+    flex-shrink: 0;
+}
+
+.checkout-summary {
+    padding: 24px;
+    background:
+        linear-gradient(180deg, rgba(8, 14, 37, 0.98), rgba(15, 26, 68, 0.98));
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 20px 44px rgba(0, 0, 0, 0.22);
+}
+
+.checkout-summary .summary-line:last-of-type {
+    padding: 18px 18px 16px;
+    border: 0;
+    border-radius: 18px;
+    background: linear-gradient(135deg, rgba(43, 114, 255, 0.2), rgba(29, 210, 175, 0.18));
+}
+
+.checkout-summary .summary-line strong {
+    font-size: 1.1rem;
+    color: #ffffff;
+}
+
+.summary-box {
+    padding: 16px 18px;
+    border-radius: 18px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.summary-box strong {
+    display: block;
+    margin-bottom: 6px;
+}
+
+.summary-box p {
+    margin: 0;
+    color: #bfcaff;
+    line-height: 1.5;
+    font-size: 0.94rem;
+}
+
 @media (max-width: 980px) {
     .store-header-wide {
+        grid-template-columns: 1fr;
+    }
+
+    .store-catalog-layout {
         grid-template-columns: 1fr;
     }
 
@@ -1082,6 +1621,19 @@ nav {
     .checkout-layout {
         grid-template-columns: 1fr;
     }
+
+    .filter-sidebar {
+        position: static;
+    }
+
+    .admin-kpis {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .admin-hero {
+        flex-direction: column;
+        align-items: stretch;
+    }
 }
 
 @media (max-width: 680px) {
@@ -1090,6 +1642,20 @@ nav {
     }
 
     .payment-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .payment-topline {
+        align-items: stretch;
+    }
+
+    .profile-photo-block {
+        grid-template-columns: 1fr;
+        justify-items: center;
+        text-align: center;
+    }
+
+    .admin-kpis {
         grid-template-columns: 1fr;
     }
 }

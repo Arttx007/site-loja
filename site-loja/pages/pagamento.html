@@ -46,6 +46,20 @@
                 </div>
             </div>
 
+            <div class="payment-topline">
+                <div class="payment-security-badge">Pagamento protegido</div>
+                <div class="payment-brands" aria-label="Bandeiras aceitas">
+                    <span>Visa</span>
+                    <span>Mastercard</span>
+                    <span>Pix</span>
+                </div>
+            </div>
+
+            <div class="payment-highlight">
+                <strong>Checkout seguro da ArtByte</strong>
+                <p>Seus dados ficam protegidos durante toda a compra.</p>
+            </div>
+
             <div id="toast" class="toast hidden"></div>
 
             <form class="settings-form" onsubmit="event.preventDefault(); finalizarPagamento();">
@@ -67,6 +81,10 @@
                         <input id="paymentCvv" type="text" placeholder="123" required>
                     </label>
                 </div>
+                <div class="payment-note">
+                    <span class="payment-note-dot"></span>
+                    <p>Ao confirmar, seu pedido sera processado e voce voltara para a vitrine.</p>
+                </div>
                 <button type="submit" class="button-primary">Pagar agora</button>
             </form>
         </section>
@@ -83,8 +101,16 @@
                 <strong id="paymentItems">0</strong>
             </div>
             <div class="summary-line">
+                <span>Entrega</span>
+                <strong>Gratis</strong>
+            </div>
+            <div class="summary-line">
                 <span>Total</span>
                 <strong id="paymentTotal">R$ 0,00</strong>
+            </div>
+            <div class="summary-box">
+                <strong>Compra segura</strong>
+                <p>Confirmacao imediata e carrinho limpo apos o pagamento.</p>
             </div>
         </aside>
     </main>
