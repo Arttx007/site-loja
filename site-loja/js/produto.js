@@ -1,63 +1,99 @@
+function aplicarPermissoesNaTela() {
+    const botaoNovoProduto = document.querySelector('button[onclick="mostrarFormularioAdd()"]');
+    const podeGerenciar = isAdmin();
+
+    if (botaoNovoProduto) {
+        botaoNovoProduto.style.display = podeGerenciar ? "inline-flex" : "none";
+    }
+}
+
 async function listarProdutos() {
+    if (!requireAuth()) {
+        return;
+    }
+
     const lista = document.getElementById("lista");
     lista.innerHTML = "";
 
     try {
         const data = await apiRequest("/produtos", "GET");
 
-        if (!data || !data.dados || data.dados.length === 0) {
+        if (!data?.dados || data.dados.length === 0) {
             lista.innerText = "Nenhum produto encontrado.";
             return;
         }
 
-        data.dados.forEach(produto => {
+        data.dados.forEach((produto) => {
             const item = document.createElement("li");
             item.className = "product-item";
 
             const info = document.createElement("div");
             info.className = "product-info";
+
             const title = document.createElement("strong");
             title.textContent = produto.nome;
+
             const subtitle = document.createElement("span");
             subtitle.textContent = `Quantidade: ${produto.quantidade < 1 ? "Em falta" : produto.quantidade}`;
+
             info.appendChild(title);
             info.appendChild(subtitle);
 
             const right = document.createElement("div");
             right.className = "product-right";
+
             const price = document.createElement("strong");
             price.textContent = `R$ ${produto.preco.toFixed(2)}`;
-            const actions = document.createElement("div");
-            actions.className = "product-actions";
 
-            const editButton = document.createElement("button");
-            editButton.type = "button";
-            editButton.className = "button-secondary small";
-            editButton.textContent = "Editar";
-            editButton.onclick = () => editarProduto(produto);
-
-            const deleteButton = document.createElement("button");
-            deleteButton.type = "button";
-            deleteButton.className = "button-danger small";
-            deleteButton.textContent = "Excluir";
-            deleteButton.onclick = () => deletarProduto(produto.id);
-
-            actions.appendChild(editButton);
-            actions.appendChild(deleteButton);
             right.appendChild(price);
-            right.appendChild(actions);
+
+            if (isAdmin()) {
+                const actions = document.createElement("div");
+                actions.className = "product-actions";
+
+                const editButton = document.createElement("button");
+                editButton.type = "button";
+                editButton.className = "button-secondary small";
+                editButton.textContent = "Editar";
+                editButton.onclick = () => editarProduto(produto);
+
+                const deleteButton = document.createElement("button");
+                deleteButton.type = "button";
+                deleteButton.className = "button-danger small";
+                deleteButton.textContent = "Excluir";
+                deleteButton.onclick = () => deletarProduto(produto.id);
+
+                actions.appendChild(editButton);
+                actions.appendChild(deleteButton);
+                right.appendChild(actions);
+            }
 
             item.appendChild(info);
             item.appendChild(right);
             lista.appendChild(item);
         });
     } catch (error) {
+        if (error.status === 401) {
+            showToast("Sua sessao expirou. Faca login novamente.", "error");
+            setTimeout(() => redirectToLogin(), 800);
+            return;
+        }
+
+        if (error.status === 403) {
+            lista.innerText = "Voce nao tem permissao para visualizar os produtos.";
+            return;
+        }
+
         console.error("Erro ao carregar produtos:", error);
         lista.innerText = "Erro ao carregar produtos. Tente novamente mais tarde.";
     }
 }
 
 async function salvarProduto() {
+    if (!requireAdmin()) {
+        return;
+    }
+
     const id = document.getElementById("produtoId").value;
     const nome = document.getElementById("produtoNome").value.trim();
     const preco = parseFloat(document.getElementById("produtoPreco").value);
@@ -68,33 +104,27 @@ async function salvarProduto() {
         return;
     }
 
-    const body = {
-        nome,
-        preco,
-        quantidade
-    };
+    const body = { nome, preco, quantidade };
 
     try {
         const endpoint = id ? `/produtos/${id}` : "/produtos";
         const method = id ? "PUT" : "POST";
         const data = await apiRequest(endpoint, method, body);
 
-        if (data.status === "erro") {
-            showToast(data.mensagem || "Não foi possível salvar o produto.", "error");
-            return;
-        }
-
         showToast(data.mensagem || "Produto salvo com sucesso.", "success");
         resetarFormulario();
         ocultarFormulario();
         listarProdutos();
     } catch (error) {
-        console.error("Erro ao salvar produto:", error);
-        showToast("Erro ao salvar produto. Tente novamente.", "error");
+        showToast(error.mensagem || "Erro ao salvar produto.", "error");
     }
 }
 
 function editarProduto(produto) {
+    if (!requireAdmin()) {
+        return;
+    }
+
     mostrarFormularioEdit();
     document.getElementById("produtoId").value = produto.id;
     document.getElementById("produtoNome").value = produto.nome;
@@ -107,6 +137,10 @@ function editarProduto(produto) {
 }
 
 function mostrarFormularioAdd() {
+    if (!requireAdmin()) {
+        return;
+    }
+
     const form = document.getElementById("product-form");
     form.classList.remove("hidden", "edit-mode");
     form.classList.add("add-mode");
@@ -158,27 +192,32 @@ function showToast(message, type = "success") {
     }, 3000);
 }
 
-window.addEventListener("load", () => {
-    ocultarFormulario();
-});
-
 async function deletarProduto(id) {
+    if (!requireAdmin()) {
+        return;
+    }
+
     if (!confirm("Tem certeza que deseja excluir este produto?")) {
         return;
     }
 
     try {
         const data = await apiRequest(`/produtos/${id}`, "DELETE");
-        if (data.status === "erro") {
-            showToast(data.mensagem || "Não foi possível excluir o produto.", "error");
-            return;
-        }
-        showToast(data.mensagem || "Produto excluído com sucesso.", "success");
+        showToast(data.mensagem || "Produto excluido com sucesso.", "success");
         resetarFormulario();
         ocultarFormulario();
         listarProdutos();
     } catch (error) {
-        console.error("Erro ao excluir produto:", error);
-        showToast("Erro ao excluir produto. Tente novamente.", "error");
+        showToast(error.mensagem || "Erro ao excluir produto.", "error");
     }
 }
+
+window.addEventListener("load", () => {
+    if (!requireAuth()) {
+        return;
+    }
+
+    ocultarFormulario();
+    aplicarPermissoesNaTela();
+    listarProdutos();
+});

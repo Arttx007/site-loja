@@ -1,19 +1,41 @@
-async function login(){
-    const email = document.getElementById("email").value;
+async function login() {
+    const email = document.getElementById("email").value.trim();
     const senha = document.getElementById("senha").value;
 
-    const data = await apiRequest("/auth/login", "POST", {
-        email, senha
-    });
+    if (!email || !senha) {
+        showToast("Preencha email e senha.", "error");
+        return;
+    }
 
-    if (data.status === "sucesso"){
+    try {
+        const data = await apiRequest("/auth/login", "POST", { email, senha });
+        const usuario = data?.dados;
+
+        if (!usuario?.token) {
+            showToast("Resposta de login invalida.", "error");
+            return;
+        }
+
+        saveAuthData({
+            id: usuario.id,
+            email: usuario.email,
+            role: usuario.role,
+            token: usuario.token
+        });
+
         showToast("Login realizado com sucesso!", "success");
+
         setTimeout(() => {
             window.location.href = "pages/produtos.html";
         }, 500);
-    } else {
-        showToast(data.mensagem || "Erro ao tentar logar", "error");
+    } catch (error) {
+        showToast(error.mensagem || "Erro ao tentar logar", "error");
     }
+}
+
+function logout() {
+    clearAuthData();
+    window.location.href = "../index.html";
 }
 
 function showToast(message, type = "success") {
