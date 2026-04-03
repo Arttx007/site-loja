@@ -1,4 +1,4 @@
-const API_URL = "http://localhost:8080";
+const API_URL = window.ARTBYTE_API_URL || "https://api-loja-java-production.up.railway.app";
 const AUTH_STORAGE_KEY = "artbyte_auth";
 const CART_STORAGE_KEY = "artbyte_cart";
 
